@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Purchase Successful</title>
+
+</head>
+<body>
+    <!-- billing/templates/billing/success.html -->
+{% extends 'billing/base.html' %}  <!-- Extend the base template -->
+
+{% block content %}  <!-- Override the 'content' block -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="text-center">Purchase Successful!</h1>
+            <p class="text-center">You have successfully purchased {{ plan.name }}.</p>
+            <div class="text-center">
+                <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+</body>
+
+</html>

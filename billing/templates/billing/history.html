@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transaction History</title>
+
+</head>
+<body>
+    <!-- billing/templates/billing/history.html -->
+{% extends 'billing/base.html' %}  <!-- Extend the base template -->
+
+{% block content %}  <!-- Override the 'content' block -->
+<h1 class="mb-4">Transaction History</h1>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Plan</th>
+                <th>Amount Paid</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.plan.name }}</td>
+                <td>KES {{ transaction.amount_paid }}</td>
+                <td>{{ transaction.transaction_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+{% endblock %}
+
+</body>
+</html>
