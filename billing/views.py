@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Plan, Transaction
 from django.utils import timezone
+from django.contrib import messages
+
 
 def home(request):
     return render(request, 'billing/home.html')
@@ -46,3 +51,32 @@ def purchase_plan(request, plan_id):
 def transaction_history(request):
     transactions = Transaction.objects.filter(user=request.user)
     return render(request, 'billing/history.html', {'transactions': transactions})
+
+# register new user
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+
+        # Check if the username already exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists. Please choose a different username.')
+            return redirect('register')
+
+        # Create a new user
+        user = User.objects.create_user(username=username, password=password, email=email)
+
+        # Send a confirmation email
+        send_mail(
+            'Registration Successful',
+            f'Hello {username},\n\nThank you for registering with ISP Billing System!',
+            settings.EMAIL_HOST_USER,  # From email
+            [email],  # To email
+            fail_silently=False,
+        )
+
+        # Redirect to login page after successful registration
+        messages.success(request, 'Registration successful! Please log in.')
+        return redirect('login')
+    return render(request, 'billing/register.html')

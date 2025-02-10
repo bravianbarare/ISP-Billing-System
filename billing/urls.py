@@ -8,4 +8,8 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('purchase/<int:plan_id>/', views.purchase_plan, name='purchase_plan'),
     path('history/', views.transaction_history, name='transaction_history'),
+
+    # path for register page
+    path('register/', views.register, name='register'),
 ]
+
